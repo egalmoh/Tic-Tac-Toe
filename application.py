@@ -25,6 +25,9 @@ def play(row, col):
     session["board"][row][col] = session["turn"]
     session["turn"] = "X" if session["turn"] == "O" else "O"
 
+    if session["board"][0][0] == session["board"][1][1] == session["board"][2][2] != None:
+        return redirect(url_for("index"))
+
     return redirect(url_for("index"))
 
 @app.route("/reset")
