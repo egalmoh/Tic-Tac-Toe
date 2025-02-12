@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, render_template, session, redirect, url_for
 from flask_session import Session
 from tempfile import mkdtemp
@@ -30,5 +32,12 @@ def reset():
     session.clear()
     return redirect(url_for("index"))
 
+@app.route("/computer")
+def computer(game, turn):
+    # AI to make its turn
+    
+    return redirect(url_for("index"))
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))  # Render provides a PORT
+    app.run(debug=True, host="0.0.0.0", port=port)
