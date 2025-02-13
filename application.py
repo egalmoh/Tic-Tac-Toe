@@ -25,9 +25,26 @@ def play(row, col):
     session["board"][row][col] = session["turn"]
     session["turn"] = "X" if session["turn"] == "O" else "O"
 
-    if session["board"][0][0] == session["board"][1][1] == session["board"][2][2] != None:
-        return redirect(url_for("index"))
+    # Check for winner in rows, columns and diagonals 
+    for i in range(3):
+        if session["board"][i][0] == session["board"][i][1] == session["board"][i][2] is not None:
+            return redirect(url_for("winner", winner=session["board"][i][0]))
+        if session["board"][0][i] == session["board"][1][i] == session["board"][2][i] is not None:
+            return redirect(url_for("winner", winner=session["board"][0][i]))
+    
+    # Diagonals 
+    if session["board"][0][2] == session["board"][1][1] == session["board"][2][0] is not None:
+        return redirect(url_for("winner", winner=session["board"][0][2]))
+    if session["board"][0][0] == session["board"][1][1] == session["board"][2][2] is not None:
+        return redirect(url_for("winner", winner=session["board"][0][0]))       
 
+    # Draw
+    for row in session["board"]:
+        for cell in row:
+            if cell is None:
+                return redirect(url_for("index"))
+        return redirect(url_for("winner", winner="Draw"))
+            
     return redirect(url_for("index"))
 
 @app.route("/reset")
@@ -40,6 +57,13 @@ def computer(game, turn):
     # AI to make its turn
     
     return redirect(url_for("index"))
+
+@app.route("/winner/<string:winner>")
+def winner(winner):
+    if winner == 'Draw':
+        return render_template("winner.html", draw=winner)
+    else:
+        return render_template("winner.html", winner=winner)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))  # Render provides a PORT
