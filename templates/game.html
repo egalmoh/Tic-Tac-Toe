@@ -15,9 +15,7 @@
                 text-align: center;
             }
             td > a {
-                width: 75px;
-                height: 50px;
-                text-decoration: none;
+                font-size: 18px;
             }
         </style>
     </head>
@@ -27,14 +25,13 @@
                 <tr>
                     {% for j in range(3) %}
                         <td>
-                            <!-- {{ i }}, {{ j }} -->
                             {% if game[i][j] %}
                                 {{ game[i][j] }}
                             {% else %}
                                 
                                     <a href="{{ url_for('play', row=i, col=j) }}">
                                         <button type="button" style="width: 50px; height: 25px;">
-                                            {{ turn }}.
+                                            {{ turn }}
                                         </button>
                                     </a>
                             {% endif %}
@@ -48,9 +45,9 @@
                 Reset
             </button>
         </a>
-        <a href="{{ url_for('computer', game=game, turn=turn) }}">
+        <a href="{{ url_for('undo_move') }}">
             <button type="button" style="margin-top: 20px; width: 100px; height: 50px;">
-                Home
+                Undo Move
             </button>
         </a>
     </body>

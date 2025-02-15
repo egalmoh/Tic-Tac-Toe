@@ -42,21 +42,26 @@ def play(row, col):
     for row in session["board"]:
         for cell in row:
             if cell is None:
-                return redirect(url_for("index"))
+                return render_template("game.html", game=session["board"], turn=session["turn"])
         return redirect(url_for("winner", winner="Draw"))
             
-    return redirect(url_for("index"))
+    return render_template("game.html", game=session["board"], turn=session["turn"])
 
 @app.route("/reset")
 def reset():
     session.clear()
     return redirect(url_for("index"))
 
-@app.route("/computer")
-def computer(game, turn):
-    # AI to make its turn
-    
-    return redirect(url_for("index"))
+@app.route("/move")
+def undo_move():
+    # Undo the last move
+    for i in range(3):
+        for j in range(3):
+            print(session["board"][i])
+            if session["board"][i][j] is not None:
+                session["board"][i][j] = None
+                session["turn"] = "X" if session["turn"] == "O" else "O"
+                return render_template("game.html", game=session["board"], turn=session["turn"])
 
 @app.route("/winner/<string:winner>")
 def winner(winner):
